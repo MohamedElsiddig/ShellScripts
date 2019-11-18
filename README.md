@@ -1,2 +1,2 @@
-# scripts
-scripts that i usually use
+# Shell Scripts
+Scripts that I usually use
