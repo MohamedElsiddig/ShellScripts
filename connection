@@ -1,0 +1,168 @@
+#!/bin/bash
+
+##################################################
+#Check internet connection function
+##################################################
+
+function chick_net()
+{
+    clear
+    echo ""
+    echo -e $light_cyan "[ * ]$light_blue Checking for internet connection\n"
+    sleep 1
+    echo -e "GET http://google.com HTTP/1.0\n\n" | nc -w 3 google.com 80 > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e $red [ X ]::$white[Internet Connection]:$red OFFLINE! $normal;
+        chknet
+        sleep 1
+    else
+        echo -e $light_green [ ✔ ]$white::$white[Internet Connection]:$light_green CONNECTED! $normal;
+        echo ""
+        echo -e $yellow"|$white---------------------------------------------------$yellow|$normal"
+        echo ""
+        sleep 1
+        private_ip_vpn=`ip route get 8.8.4.4 | head -1 | awk '{print $7}'`
+        if [[ -z $private_ip_vpn ]] ; then
+            echo -e $red [ X ]$white::$white[Couldn\'t get Private ip address For The Machiane]:$red Network is unreachable! $normal;
+            echo ""   
+        elif [[ $private_ip_vpn != 0 ]]; then
+            for network_card in $(ls /sys/class/net/)
+                do
+                    state=`cat /sys/class/net/$network_card/operstate`
+                    if [[ $state = "up" ]] 
+                        then
+                            echo  $network_card is up > /dev/null 2>&1
+                            private_ip=`ip addr | grep $network_card | awk '{print $2}' | cut -f1 -d'/' | sed "/${network_card}/d" | sed '/^$/d'`
+                        else
+                            echo $network_card not up > /dev/null 2>&1
+                    fi
+            done
+            if [[ $private_ip_vpn != $private_ip ]] 
+                then
+                    echo -e "$light_cyan [ * ]$white::$white[Your Private ip address is]:"$light_blue $private_ip $normal"\n";
+                    sleep 1
+                elif [[ $private_ip_vpn = $private_ip ]]  
+                    then
+                        # private_ip=`ip addr | grep $network_card | awk '{print $2}' | cut -f1 -d'/' | sed "/${network_card}/d" | sed '/^$/d'`
+                        echo -e "$light_cyan [ * ]$white::$white[Your Private ip address is]:"$light_blue $private_ip_vpn $normal"\n";
+                    else
+                        echo -e $red [ X ]$white::$white[Couldn\'t get Private ip address For The Machiane]:$red Network is unreachable! $normal;
+                        echo ""    
+            fi
+            sleep 1
+            if [[ $private_ip_vpn != $private_ip ]] 
+                then
+                    echo -e "$light_cyan [ * ]$white::$white[Your Private ip address For VPN is]:"$light_blue $private_ip_vpn $normal"\n";
+                else
+                    echo -e $red [ X ]$white::$white[Couldn\'t get Private ip address For VPN]:$red You are Not Connected to VPN! $normal;
+                    echo ""
+            fi
+        fi
+        
+        public_ip=`wget --timeout=2 --tries=3 https://ipecho.net/plain -O - -q`
+        if [ $? -eq 0 ]; then
+            sleep 1
+            echo -e "$light_cyan [ * ]$white::$white[Your Public ip address is]:"$light_blue $public_ip $normal;
+            echo ""
+        else
+            echo -e $red [ X ]$white::$white[Couldn\'t get Public ip address]:$red Due Bad Connection! $normal;
+            echo ""
+        fi
+        
+        error=`curl -s --connect-timeout 4 https://ipinfo.io/$public_ip/country | grep Error | cut -f2 -d'<' | cut -f2 -d'>'`
+        if [[ $error != "Error" ]] 
+            then
+                country_id=`curl -s --connect-timeout 4 https://ipinfo.io/country`
+                if [[ ! -z $country_id ]]
+                    then
+                        :
+                    else
+                        country_id="$red Couldn't Get Country ID$light_blue"
+                fi
+
+            else
+                country_id="$red Couldn't Get Country ID$light_blue"
+        fi
+        country_name=`curl -s --connect-timeout 4 https://ipapi.co/$public_ip/json/ | grep country_name | cut -f2 -d'_' | cut -f2 -d':' | cut -f1 -d',' | tr -d "\""`
+        if [[ ! -z $country_name && ! -z $country_id ]]; then
+            echo -e "$light_cyan [ * ]$white::$white[You are Browsing The Internet From]:"$light_blue $country_id, $country_name $normal;
+            echo ""
+        else
+        echo -e $red [ X ]$white::$white[Couldn\'t get Country Information]:$red Due Bad Connection! $normal;
+            echo ""
+        fi
+        sleep 1
+
+    fi
+}
+
+##################################################
+#Check internet connection problem if found function
+##################################################
+
+function chknet() {
+    echo -e $red "[X] Your Internet is not working correctly!" $normal
+    sleep 1
+    echo -e $cyan "[*] Checking ...."
+    #ping hostname failed , so now will test ping google ip dns server
+    ping -c 1 8.8.4.4 > /dev/null 2>&1
+    png="$?"
+    if [ $png == "0" ]
+        then
+        #Ping dns server worked , inform user what happened and proceed with Script
+            echo -e $red "[X] Your linux OS is not able to resolve" $normal
+            echo -e $red "hostnames over terminal using ping !!"
+            echo ""
+            echo -e $yellow "Search on the web : (unable to resolve hostnames ping) to find a solution" $normal
+            echo ""
+            echo -e $cyan "Internet may not work because :" $normal
+            echo -e $white "Ping google.com =$red Failed" $normal
+            echo -e $white "Ping google DNS =$green Success" $normal
+            echo ""
+            echo -e $green "Press [ENTER] key to continue" $normal
+            read -t 3 continue
+            exit 1
+            sleep 1
+    elif [ $png == "1" ]
+        then
+            #Uses is only connected to lan and not to the web , aborting
+            echo -e $yellow "You are connected to your local network but not to the web ." $normal
+            echo -e $yellow "Check if your router/modem gateway is connected to the web ." $normal
+            echo ""
+            echo -e $white "Internet will not work , you are only connected to your local lan." $normal
+            echo ""
+            echo -e $cyan "Internet will not work because :" $normal
+            echo -e $white "Ping google.com =$red Failed" $normal
+            echo -e $white "Ping google DNS =$red Failed" $normal
+            echo ""
+            echo -e $green "Press [ENTER] key to continue" $normal
+            read -t 3 continue
+            exit 1
+            sleep 1
+    elif [ $png == "2" ]
+        then
+            # user is not connected to anywhere , web or lan , aborting
+            echo -e $red "You are not connected to any network ." $normal
+            echo ""
+            echo -e $cyan "Internet will not work because :" $normal
+            echo -e $white "Ping google.com =$red Failed$normal"
+            echo -e $white "Ping google DNS =$red Failed$normal"
+            echo ""
+            echo -e $green "Press [ENTER] key to continue$normal"
+            read -t 3 continue
+            exit 1
+            sleep 1
+    fi
+}
+normal='\e[0m'
+cyan='\e[0;36m'
+green='\e[0;32m'
+light_green='\e[1;32m'
+white='\e[0;37m'
+yellow='\e[0;33m'
+blue='\e[0;34m'
+light_blue='\e[1;34m'
+orange='\e[38;5;166m'
+light_cyan='\e[1;36m'
+red='\e[1;31m'
+chick_net
