@@ -1,4 +1,5 @@
 grub_fix_autoDetect.sh
 grub_fix.sh
 hacking-tools.sh
+kill-gnome-software.sh
 /download-watcher
