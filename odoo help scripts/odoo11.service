@@ -1,0 +1,16 @@
+[Unit]
+Description=Odoo11
+Requires=postgresql.service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+SyslogIdentifier=odoo11
+PermissionsStartOnly=true
+User=odoo
+Group=odoo
+ExecStart=/opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=Odoo_change_monitoring
+Requires=
+After=autoRestart_odoo_server.service
+
+[Service]
+Type=simple
+SyslogIdentifier=odoo_change_monitoring
+PermissionsStartOnly=true
+User=mohamedelsiddig
+Group=mohamedelsiddig
+ExecStart=/usr/bin/odoo_change_monitoring.sh 
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target

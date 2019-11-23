@@ -1,0 +1,16 @@
+[Unit]
+Description=auto_Restart_Odoo11
+Requires=
+After=odoo11.service
+
+[Service]
+Type=simple
+SyslogIdentifier=auto_restart_odoo11
+PermissionsStartOnly=true
+User=mohamedelsiddig
+Group=mohamedelsiddig
+ExecStart=/usr/bin/autoRestart_odoo_server.sh 
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
