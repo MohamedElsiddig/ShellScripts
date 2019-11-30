@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+#
+# This script is used to manage the ~/Download folder of a user. It will be the
+# handler of inotify notifications and will move a downloaded file into
+# subfolders under the ~/Download folder named after the file's extension.
+#got it from  https://github.com/nkakouros-original/download-watcher.git
+
+folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures")
+set -euo pipefail
+
+cd Downloads || exit 1
+
+declare -ri IN_MOVED_TO=128
+declare -ri IN_CREATE=256
+
+function move_per_filetype() {
+  local file="$1"
+
+  local file_extension
+  file_extension="${file##*.}"
+
+  local user="$(stat -c %U .)"
+
+  if [[ "${file_extension}" == '' ]]; then
+    return
+  fi
+for default_dirs in ${folders[@]}
+	do
+		if [[ ! -e "${default_dirs}" ]]
+			then
+				mkdir -p "${default_dirs}" > /dev/null 2>&1
+			else
+				:
+		fi
+	done
+
+  case "${file_extension}" in
+     'pptx'| 'ppt' | 'odf' | 'doc' | 'docx' | 'pdf' | 'txt')
+      sudo -u "$user" mv -f "$file" "Documents/"
+      ;;
+      'mp4')
+      sudo -u "$user" mv -f "$file" "Video/"
+      ;;
+      'zip'|'rar'|'bz2' | 'gz' | 'tar' | 'tbz2' | 'tgz' | 'Z' | '7z' | 'xz' | 'ex' | 'tar.bz2' | 'tar.gz' | 'tar.xz' | 'iso'| 'apk')
+      sudo -u "$user" mv -f "$file" "Compressed/"
+      ;;
+     'deb'| 'rpm' | 'exe' | 'AppImage' | 'dmg')
+      sudo -u "$user" mv -f "$file" "Programs/"
+      ;;
+      'mp3'| 'mpa' | 'wav')
+      sudo -u "$user" mv -f "$file" "Music/"
+      ;;
+      'hs'| 'sh'| 'pl'| 'py'| 'rb'| 'jl'| 'r'| 'js')
+      sudo -u "$user" mv -f "$file" "Scripts/"
+      ;;
+      'png'| 'jpg'| 'jpeg' | 'gif' | 'tif' | 'tiff' | 'bpm' | 'svg')
+      sudo -u "$user" mv -f "$file" "Pictures/"
+      ;;
+    *)
+      return
+      ;;
+  esac
+}
+
+
+function download_watcher() {
+  local file
+  local event
+
+  event="${WENDY_EVENT-$1}"
+  file="${WENDY_INODE-$2}"
+
+  case "$event" in
+    256)
+      move_per_filetype "$file"
+      ;;
+    128)
+      WENDY_EVENT=256
+      at now + 1 minutes <<< "${BASH_SOURCE[0]} $event $file"
+      ;;
+  esac
+}
+
+
+download_watcher "$@"
+

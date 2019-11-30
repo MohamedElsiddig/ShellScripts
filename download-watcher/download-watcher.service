@@ -1,0 +1,14 @@
+[Unit]
+Description=Download Folder Watcher
+# After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=~
+User=mohamedelsiddig
+ExecStart=/usr/local/bin/wendy -m 384 -f "Downloads" /usr/local/bin/download-watcher
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
