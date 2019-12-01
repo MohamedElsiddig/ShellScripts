@@ -3,7 +3,6 @@
 # This script is used to manage the ~/Download folder of a user. It will be the
 # handler of inotify notifications and will move a downloaded file into
 # subfolders under the ~/Download folder named after the file's extension.
-#got it from  https://github.com/nkakouros-original/download-watcher.git
 
 folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures")
 set -euo pipefail
@@ -38,7 +37,7 @@ for default_dirs in ${folders[@]}
      'pptx'| 'ppt' | 'odf' | 'doc' | 'docx' | 'pdf' | 'txt')
       sudo -u "$user" mv -f "$file" "Documents/"
       ;;
-      'mp4')
+      'mp4'| 'mkv')
       sudo -u "$user" mv -f "$file" "Video/"
       ;;
       'zip'|'rar'|'bz2' | 'gz' | 'tar' | 'tbz2' | 'tgz' | 'Z' | '7z' | 'xz' | 'ex' | 'tar.bz2' | 'tar.gz' | 'tar.xz' | 'iso'| 'apk')
