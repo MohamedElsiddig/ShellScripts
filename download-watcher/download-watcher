@@ -49,7 +49,7 @@ for default_dirs in ${folders[@]}
       'mp3'| 'mpa' | 'wav')
       sudo -u "$user" mv -f "$file" "Music/"
       ;;
-      'hs'| 'sh'| 'pl'| 'py'| 'rb'| 'jl'| 'r'| 'js')
+      'hs'| 'sh'| 'pl'| 'py'| 'rb'| 'jl'| 'r'| 'js'| 'bash')
       sudo -u "$user" mv -f "$file" "Scripts/"
       ;;
       'png'| 'jpg'| 'jpeg' | 'gif' | 'tif' | 'tiff' | 'bpm' | 'svg')
