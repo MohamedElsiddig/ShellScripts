@@ -7,7 +7,7 @@
 folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures")
 set -euo pipefail
 
-cd Downloads || exit 1
+cd ~/Downloads || exit 1
 
 declare -ri IN_MOVED_TO=128
 declare -ri IN_CREATE=256
