@@ -23,7 +23,7 @@ function move_per_filetype() {
   if [[ "${file_extension}" == '' ]]; then
     return
   fi
-for default_dirs in ${folders[@]}
+for default_dirs in "${folders[@]}"
 	do
 		if [[ ! -e "${default_dirs}" ]]
 			then
