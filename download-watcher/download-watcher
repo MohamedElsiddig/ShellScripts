@@ -4,7 +4,7 @@
 # handler of inotify notifications and will move a downloaded file into
 # subfolders under the ~/Download folder named after the file's extension.
 
-folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures")
+folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures" "Torrent Files")
 set -euo pipefail
 
 cd ~/Downloads || exit 1
@@ -54,6 +54,9 @@ for default_dirs in ${folders[@]}
       ;;
       'png'| 'jpg'| 'jpeg' | 'gif' | 'tif' | 'tiff' | 'bpm' | 'svg')
       sudo -u "$user" mv -f "$file" "Pictures/"
+      ;;
+      'torrent')
+      sudo -u "$user" mv -f "$file" "Torrent Files/"
       ;;
     *)
       return
