@@ -4,7 +4,7 @@
 # handler of inotify notifications and will move a downloaded file into
 # subfolders under the ~/Download folder named after the file's extension.
 
-folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures" "Torrent Files")
+folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures" "Videos" "Torrent Files")
 set -euo pipefail
 
 cd ~/Downloads || exit 1
@@ -38,7 +38,7 @@ for default_dirs in "${folders[@]}"
       sudo -u "$user" mv -f "$file" "Documents/"
       ;;
       'mp4'| 'mkv')
-      sudo -u "$user" mv -f "$file" "Video/"
+      sudo -u "$user" mv -f "$file" "Videos/"
       ;;
       'zip'|'rar'|'bz2' | 'gz' | 'tar' | 'tbz2' | 'tgz' | 'Z' | '7z' | 'xz' | 'ex' | 'tar.bz2' | 'tar.gz' | 'tar.xz' | 'iso'| 'apk')
       sudo -u "$user" mv -f "$file" "Compressed/"
