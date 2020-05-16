@@ -40,7 +40,7 @@ for default_dirs in "${folders[@]}"
       'mp4'| 'mkv')
       sudo -u "$user" mv -f "$file" "Videos/"
       ;;
-      'zip'|'rar'|'bz2' | 'gz' | 'tar' | 'tbz2' | 'tgz' | 'Z' | '7z' | 'xz' | 'ex' | 'tar.bz2' | 'tar.gz' | 'tar.xz' | 'iso'| 'apk')
+      'zip'|'rar'|'bz2' | 'gz' | 'tar' | 'zst' | 'tbz2' | 'tgz' | 'Z' | '7z' | 'xz' | 'ex' | 'tar.bz2' | 'tar.gz' | 'tar.xz' | 'iso'| 'apk')
       sudo -u "$user" mv -f "$file" "Compressed/"
       ;;
      'deb'| 'rpm' | 'exe' | 'AppImage' | 'dmg')
