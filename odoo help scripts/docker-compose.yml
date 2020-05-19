@@ -21,7 +21,7 @@ services:
     command: odoo -u all
 #    command: odoo scaffold /mnt/extra-addons/test_module
     volumes:
-      - ~/Documents/extra-addons:/mnt/extra-addons     
+      - /home/mohamedelsiddig/Documents/extra-addons:/mnt/extra-addons     
 #     - ./etc:/etc/odoo
       - odoo-web-data:/var/lib/odoo
     restart: always             # run as a service
