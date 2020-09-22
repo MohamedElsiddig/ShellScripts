@@ -6,13 +6,16 @@ services:
     restart: always
     ports: 
       - 5432:5432
-    volumes:
-      - db:/var/lib/postgresql/data
+ #   volumes:
+#      - db:/var/lib/postgresql/data
     environment:
      - POSTGRES_PASSWORD=nextcloud
      - POSTGRES_DB=nextcloud
      - POSTGRES_USER=nextcloud
-    #  - POSTGRES_DB_FILE=/run/secrets/postgres_db
+     - POSTGRES_DATA=/var/lib/postgresql/data
+    volumes:
+     - db:/var/lib/postgresql/data  
+  #  - POSTGRES_DB_FILE=/run/secrets/postgres_db
     #  - POSTGRES_USER_FILE=/run/secrets/postgres_user
     #  - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
    # secrets:
@@ -26,7 +29,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - nextcloud:/var/www/html/data
+      - nextcloud:/var/www/html
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_PASSWORD=nextcloud
