@@ -12,7 +12,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #EMAIL="webmaster@sppc-sd.com"
 EMAIL="mxlr7siddig@gmail.com"
 ##list your services you want to check
-SERVICES=( 'smb' )
+SERVICES=( 'smb' 'nextcloud@nextcloud' )
 
 #### OK. STOP EDITING ####
 
