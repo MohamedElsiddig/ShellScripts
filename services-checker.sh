@@ -4,13 +4,12 @@
 ##if that service is not running
 ##it will start the service and send an email to you
 ##if the restart does not work, it sends an email and then exits
-#set -x
 ##set the path ##this works for Ubuntu 14.04 and 16.04
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-
+#set -x
 ##set your email address 
-#EMAIL="webmaster@sppc-sd.com"
-EMAIL="mxlr7siddig@gmail.com"
+#EMAIL="webmaster@mail.com"
+EMAIL="reciver-email@mail.com"
 ##list your services you want to check
 SERVICES=( 'smb' 'nextcloud@nextcloud' )
 
