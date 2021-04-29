@@ -6,7 +6,7 @@ Description=Download Folder Watcher
 Type=simple
 WorkingDirectory=~
 User=mohamedelsiddig
-ExecStart=/usr/local/bin/wendy -m 384 -f "Downloads" /usr/local/bin/download-watcher
+ExecStart=/usr/local/bin/wendy -m 384 -w "Downloads" /usr/local/bin/download-watcher
 Restart=always
 RestartSec=3
 
