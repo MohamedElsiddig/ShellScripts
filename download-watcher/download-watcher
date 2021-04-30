@@ -38,7 +38,7 @@ for default_dirs in "${folders[@]}"
       sudo -u "$user" mv -f "$file" "Documents/"
       ;;
       'mp4'| 'mkv')
-      sudo -u "$user" mv -f "$file" "Videos/"
+      sudo -u "$user" mv -f "$file" "Video/"
       ;;
       'zip'|'rar'|'bz2' | 'gz' | 'tar' | 'zst' | 'tbz2' | 'tgz' | 'Z' | '7z' | 'xz' | 'ex' | 'tar.bz2' | 'tar.gz' | 'tar.xz' | 'iso'| 'apk')
       sudo -u "$user" mv -f "$file" "Compressed/"
