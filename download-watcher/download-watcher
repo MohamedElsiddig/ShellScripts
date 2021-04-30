@@ -4,13 +4,13 @@
 # handler of inotify notifications and will move a downloaded file into
 # subfolders under the ~/Download folder named after the file's extension.
 
-folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures" "Videos" "Torrent Files")
+folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures" "Video" "Torrent Files")
 set -euo pipefail
-
+set -x
 cd ~/Downloads || exit 1
 
-declare -ri IN_MOVED_TO=128
-declare -ri IN_CREATE=256
+declare -ri MOVED_TO=128
+declare -ri CREATE=256
 
 function move_per_filetype() {
   local file="$1"
@@ -34,7 +34,7 @@ for default_dirs in "${folders[@]}"
 	done
 
   case "${file_extension}" in
-     'pptx'| 'ppt' | 'odf' | 'doc' | 'docx' | 'pdf' | 'txt')
+     'odt'| 'pptx' | 'ppt' | 'odf' | 'doc' | 'docx' | 'pdf' | 'txt')
       sudo -u "$user" mv -f "$file" "Documents/"
       ;;
       'mp4'| 'mkv')
@@ -73,10 +73,10 @@ function download_watcher() {
   file="${WENDY_INODE-$2}"
 
   case "$event" in
-    256)
+    256|CREATE)
       move_per_filetype "$file"
       ;;
-    128)
+    128|MOVED_TO)
       WENDY_EVENT=256
       at now + 1 minutes <<< "${BASH_SOURCE[0]} $event $file"
       ;;

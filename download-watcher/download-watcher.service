@@ -4,9 +4,9 @@ Description=Download Folder Watcher
 
 [Service]
 Type=simple
-WorkingDirectory=~
-User=mohamedelsiddig
-ExecStart=/usr/local/bin/wendy -m 384 -w "Downloads" /usr/local/bin/download-watcher
+WorkingDirectory=/home/melsiddig/Downloads
+User=melsiddig
+ExecStart=/usr/bin/wendy -m 384 -v -w "." /usr/local/bin/download-watcher
 Restart=always
 RestartSec=3
 
