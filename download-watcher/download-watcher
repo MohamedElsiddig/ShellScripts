@@ -6,7 +6,7 @@
 
 folders=("Documents" "Music" "Compressed" "Programs" "Scripts" "Pictures" "Video" "Torrent Files")
 set -euo pipefail
-set -x
+#set -x
 cd ~/Downloads || exit 1
 
 declare -ri MOVED_TO=128
