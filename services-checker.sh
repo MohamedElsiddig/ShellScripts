@@ -19,7 +19,7 @@ SERVICES=( 'smb' 'nextcloud@nextcloud' )
  for i in "${SERVICES[@]}"
   do
  ###CHECK SERVICE####
- `pgrep $i >/dev/null 2>&1`
+ $(pgrep $i >/dev/null 2>&1)
  STATS="$?"
 
  ###IF SERVICE IS NOT RUNNING####

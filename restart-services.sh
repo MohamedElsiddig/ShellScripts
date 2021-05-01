@@ -20,7 +20,7 @@ SERVICES=( 'apache2' 'mysql' )
  for i in "${SERVICES[@]}"
   do
  ###CHECK SERVICE####
- `pgrep $i >/dev/null 2>&1`
+ $(pgrep $i >/dev/null 2>&1)
  STATS=$(echo $?)
 
  ###IF SERVICE IS NOT RUNNING####
