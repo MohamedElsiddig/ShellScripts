@@ -34,7 +34,7 @@ for default_dirs in "${folders[@]}"
 	done
 
   case "${file_extension}" in
-     'odt'| 'pptx' | 'ppt' | 'odf' | 'doc' | 'docx' | 'pdf' | 'txt')
+     'epub'| 'odt' | 'pptx' | 'ppt' | 'odf' | 'doc' | 'docx' | 'pdf' | 'txt' | 'xlsx' )
       sudo -u "$user" mv -f "$file" "Documents/"
       ;;
       'mp4'| 'mkv')
@@ -59,6 +59,7 @@ for default_dirs in "${folders[@]}"
       sudo -u "$user" mv -f "$file" "Torrent Files/"
       ;;
     *)
+	sudo -u "$user" mv -f "$file" "Others/"    
       return
       ;;
   esac
@@ -78,7 +79,7 @@ function download_watcher() {
       ;;
     128|MOVED_TO)
       WENDY_EVENT=256
-      at now + 1 minutes <<< "${BASH_SOURCE[0]} $event $file"
+      at now + 3 minutes <<< "${BASH_SOURCE[0]} ${event} ${file}"
       ;;
   esac
 }
